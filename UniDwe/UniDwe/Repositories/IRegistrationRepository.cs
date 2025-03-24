@@ -6,6 +6,7 @@ namespace UniDwe.Repositories
     public interface IRegistrationRepository
     {
         Task<User> CreateAsync(User user);
+        Task<User> GetUserByEmailAsync(string email);
         Task<User> GetByIdAsync(int id);
     }
 
@@ -29,6 +30,11 @@ namespace UniDwe.Repositories
         public async Task<User> GetByIdAsync(int id)
         { 
            return await _dbContext.users.FindAsync(id);
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _dbContext.users.FindAsync(email);
         }
     }
 }

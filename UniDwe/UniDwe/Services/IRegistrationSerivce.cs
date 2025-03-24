@@ -7,7 +7,8 @@ namespace UniDwe.Services
     public interface IRegistrationSerivce
     {
         Task<User> CreateUserAsync(User user); 
-        Task<User> GetUserByIdAsync(int id); 
+        Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByEmailAsync(string email);
     }
     public class RegistrationService : IRegistrationSerivce
     {
@@ -20,14 +21,24 @@ namespace UniDwe.Services
             _logger = logger;
         }
 
-        public Task<User> CreateUserAsync(User user)
-        {
+        public async Task<User> CreateUserAsync(User user)
+        { 
+            return await _registrationRepository.CreateAsync(user);
             throw new NotImplementedException();
         }
 
-        public Task<User> GetUserByIdAsync(int id)
-        {
+        public async Task<User> GetUserByEmailAsync(string email)
+        { 
+            return await _registrationRepository.GetUserByEmailAsync(email);
             throw new NotImplementedException();
         }
+
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            return await _registrationRepository.GetByIdAsync(id);
+            throw new NotImplementedException();
+        }
+
+
     }
 }
