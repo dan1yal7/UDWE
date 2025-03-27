@@ -20,5 +20,15 @@ namespace UniDwe.Controllers
         {
             return View("Index", new RegistrationViewModel());
         }
+
+        [HttpPost]
+        [Route("/register")]
+        public IActionResult IndexSave(RegistrationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+              
+            }
+        }
     }
 }
