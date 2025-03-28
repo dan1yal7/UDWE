@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
+using UniDwe.AutoMapper;
 using UniDwe.Models.ViewModel;
 using UniDwe.Services;
 
@@ -27,8 +28,9 @@ namespace UniDwe.Controllers
         {
             if (ModelState.IsValid)
             {
-              
+               _registrationService.CreateUserAsync(RegistrationMapper.MapRegistrationViewModelToUserModel(model)); 
             }
+            return View("Index", model);
         }
     }
 }
