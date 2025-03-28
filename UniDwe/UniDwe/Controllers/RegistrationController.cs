@@ -16,19 +16,20 @@ namespace UniDwe.Controllers
         }
 
         [HttpGet]
-        [Route("/register")]
+        [Route("/registration")]
         public IActionResult Index()    
         {
             return View("Index", new RegistrationViewModel());
         }
 
         [HttpPost]
-        [Route("/register")]
+        [Route("/registration")]
         public IActionResult IndexSave(RegistrationViewModel model)
         {
             if (ModelState.IsValid)
             {
-               _registrationService.CreateUserAsync(RegistrationMapper.MapRegistrationViewModelToUserModel(model)); 
+               _registrationService.CreateUserAsync(RegistrationMapper.MapRegistrationViewModelToUserModel(model));
+                return Redirect("/");
             }
             return View("Index", model);
         }
