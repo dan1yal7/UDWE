@@ -8,6 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".udwe_ecodiploma";
+    options.IdleTimeout = TimeSpan.FromSeconds(3600);
+    options.Cookie.IsEssential = true;
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IRegistrationSerivce, RegistrationService>();
@@ -29,6 +36,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();   
 
 app.MapControllerRoute(
     name: "default",
