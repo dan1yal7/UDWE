@@ -13,12 +13,10 @@ namespace UniDwe.Services
     public class RegistrationService : IRegistrationSerivce
     {
         private readonly IRegistrationRepository _registrationRepository;
-        private readonly ILogger _logger;
 
-        public RegistrationService(IRegistrationRepository registrationRepository, ILogger logger)
+        public RegistrationService(IRegistrationRepository registrationRepository)
         {
             _registrationRepository = registrationRepository;
-            _logger = logger;
         }
 
         public async Task<User> CreateUserAsync(User user)
