@@ -1,4 +1,6 @@
-﻿using UniDwe.Infrastructure;
+﻿using Microsoft.AspNet.Identity;
+using UniDwe.Helpers;
+using UniDwe.Infrastructure;
 using UniDwe.Models;
 using UniDwe.Session;
 
@@ -16,15 +18,21 @@ namespace UniDwe.Repositories
     { 
         private readonly ApplicationDbContext _dbContext;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IPasswordHelper _passwordHelper;
 
-        public RegistrationRepository(ApplicationDbContext dbContext, IHttpContextAccessor contextAccessor)
+        public RegistrationRepository(ApplicationDbContext dbContext, 
+            IHttpContextAccessor contextAccessor,
+            IPasswordHelper passwordHelper)
         {
             _dbContext = dbContext;
             _contextAccessor = contextAccessor;
+            _passwordHelper = passwordHelper;
         }
 
         public async Task<User> CreateAsync(User user)
         { 
+          user.Salt = Guid.NewGuid().ToString();
+          user.PasswordHash = _passwordHelper.HashPassword(user.PasswordHash, user.Salt);
           var createdUser =  await _dbContext.users.AddAsync(user);
           if(createdUser != null)
           {
