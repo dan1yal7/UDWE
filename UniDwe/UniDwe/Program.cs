@@ -18,6 +18,8 @@ builder.Services.AddSession(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IRegistrationSerivce, RegistrationService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 
 var app = builder.Build();

@@ -10,7 +10,7 @@ namespace UniDwe.Session
       {
             session.SetString(key, JsonSerializer.Serialize<T>(value));
       } 
-     
+        
       public static T? Get<T>(this ISession session, string key)
       {
             var value = session.GetString(key);

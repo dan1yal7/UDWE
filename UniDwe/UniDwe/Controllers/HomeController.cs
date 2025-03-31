@@ -1,21 +1,24 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using UniDwe.Models;
+using UniDwe.Services;
 
 namespace UniDwe.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICurrentUserService _currentUserService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICurrentUserService currentUserService)
         {
             _logger = logger;
+            _currentUserService = currentUserService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(_currentUserService.IsLoggedIn());
         }
 
         public IActionResult Privacy()
