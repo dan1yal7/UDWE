@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Net;
 using System.Text;
 
 namespace UniDwe.Helpers
@@ -9,7 +10,7 @@ namespace UniDwe.Helpers
     }
 
     public class PasswordHelper : IPasswordHelper
-    {
+    { 
         public string HashPassword(string password, string salt)
         {  
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(password, 
