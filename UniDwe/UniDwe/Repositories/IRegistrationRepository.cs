@@ -32,7 +32,7 @@ namespace UniDwe.Repositories
         public async Task<User> CreateAsync(User user)
         { 
           user.Salt = Guid.NewGuid().ToString();
-          user.PasswordHash = _passwordHelper.HashPassword(user.PasswordHash, user.Salt);
+          user.PasswordHash = _passwordHelper.HashPassword(user.PasswordHash!, user.Salt);
           var createdUser =  await _dbContext.users.AddAsync(user);
           if(createdUser != null)
           {

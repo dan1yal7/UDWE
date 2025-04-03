@@ -27,11 +27,8 @@ namespace UniDwe.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.UserName != null && model.Password != null)
-                {
-                    _registrationService.GetUserByUsernameAndPasswordAsync(model.UserName, model.Password);
-                    return Redirect("/");
-                }
+              _registrationService.GetUserByUsernameAndPasswordAsync(model.UserName!, model.Password!);
+               return Redirect("/");
             }
             return View("Index", model);
         }
