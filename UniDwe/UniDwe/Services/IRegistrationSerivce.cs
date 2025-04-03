@@ -8,8 +8,7 @@ namespace UniDwe.Services
     {
         Task<User> CreateUserAsync(User user); 
         Task<User> GetUserByIdAsync(int id);
-        Task<User> GetUserByEmailAsync(string email);
-        Task<User> AuthenticateUserAsyn(string username, string password, bool rememberMe);
+        Task<User> AuthenticateUserAsync(string username, string password, bool rememberMe);
     }
     public class RegistrationService : IRegistrationSerivce
     {
@@ -20,7 +19,7 @@ namespace UniDwe.Services
             _registrationRepository = registrationRepository;
         }
 
-        public async Task<User> AuthenticateUserAsyn(string username, string password, bool rememberMe)
+        public async Task<User> AuthenticateUserAsync(string username, string password, bool rememberMe)
         {
             return await _registrationRepository.AuthenticateUserAsync(username, password, rememberMe);
         }
@@ -28,12 +27,6 @@ namespace UniDwe.Services
         public async Task<User> CreateUserAsync(User user)
         { 
             return await _registrationRepository.CreateAsync(user);
-            throw new NotImplementedException();
-        }
-
-        public async Task<User> GetUserByEmailAsync(string email)
-        { 
-            return await _registrationRepository.GetUserByEmailAsync(email);
             throw new NotImplementedException();
         }
 
