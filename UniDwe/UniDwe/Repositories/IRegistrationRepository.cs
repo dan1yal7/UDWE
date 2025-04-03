@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
-using UniDwe.Helpers;
+﻿using UniDwe.Helpers;
 using UniDwe.Infrastructure;
 using UniDwe.Models;
 using UniDwe.Session;
