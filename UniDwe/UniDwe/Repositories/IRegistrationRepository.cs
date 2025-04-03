@@ -10,7 +10,7 @@ namespace UniDwe.Repositories
         Task<User> CreateAsync(User user);
         Task<User> GetUserByEmailAsync(string email);
         Task<User> GetByIdAsync(int id);
-        Task<User> GetByUsernameAndPasswordAsync(string username, string password);
+        Task<User> GetByUsernameAndPasswordAsync(string username, string password, bool rememberMe);
         void Login(int id);
     }
 
@@ -57,9 +57,9 @@ namespace UniDwe.Repositories
             return await _dbContext.users.FindAsync(email) ?? throw new Exception();
         }
 
-        public async Task<User> GetByUsernameAndPasswordAsync(string username, string password)
+        public async Task<User> GetByUsernameAndPasswordAsync(string username, string password, bool rememberMe)
         {
-           return await _dbContext.users.FindAsync(username, password) ?? throw new Exception();
+           return await _dbContext.users.FindAsync(username, password, rememberMe) ?? throw new Exception();
         }
     }
 }

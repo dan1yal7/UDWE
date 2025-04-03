@@ -1,1 +1,20 @@
-﻿
+﻿@using UniDwe.Models.ViewModel
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Registration";
+}
+
+<div>
+    <form action="/registration" method="post">
+        <p>
+            <label>UserName</label>
+            <input name="UserName" value="@Model.UserName" />
+        </p>
+        <p>
+            <label>Password</label>
+            <input name="Password" type="password" />
+        </p>
+        <button>Log In</button>
+    </form>
+</div>
