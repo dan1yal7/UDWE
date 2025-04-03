@@ -9,6 +9,7 @@ namespace UniDwe.Services
         Task<User> CreateUserAsync(User user); 
         Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByEmailAsync(string email);
+        Task<User>GetUserByUsernameAndPasswordAsync(string username, string password);
     }
     public class RegistrationService : IRegistrationSerivce
     {
@@ -37,6 +38,10 @@ namespace UniDwe.Services
             throw new NotImplementedException();
         }
 
-
+        public async Task<User> GetUserByUsernameAndPasswordAsync(string username, string password)
+        { 
+            return await _registrationRepository.GetByUsernameAndPasswordAsync(username, password);
+            throw new NotImplementedException();
+        }
     }
 }
