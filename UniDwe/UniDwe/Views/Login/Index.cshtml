@@ -2,11 +2,11 @@
 @model LoginViewModel
 
 @{
-    ViewData["Title"] = "Registration";
+    ViewData["Title"] = "Authorization";
 }
 
 <div>
-    <form action="/registration" method="post">
+    <form action="/login" method="post">
         <p>
             <label>UserName</label>
             <input name="UserName" value="@Model.UserName" />
