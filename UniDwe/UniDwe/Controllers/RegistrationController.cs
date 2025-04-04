@@ -24,11 +24,11 @@ namespace UniDwe.Controllers
 
         [HttpPost]
         [Route("/registration")]
-        public IActionResult IndexSave(RegistrationViewModel model)
+        public async Task <IActionResult> IndexSave(RegistrationViewModel model)
         {
             if (ModelState.IsValid)
             {
-               _registrationService.CreateUserAsync(RegistrationMapper.MapRegistrationViewModelToUserModel(model));
+                await _registrationService.CreateUserAsync(RegistrationMapper.MapRegistrationViewModelToUserModel(model));
                 return Redirect("/");
             }
             return View("Index", model);

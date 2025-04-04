@@ -23,11 +23,11 @@ namespace UniDwe.Controllers
 
         [HttpPost]
         [Route("/login")]
-        public IActionResult IndexSave(LoginViewModel model)
+        public async Task <IActionResult> IndexSave(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-              _registrationService.AuthenticateUserAsync(model.UserName!, model.Password!, model.RememberMe);
+               await _registrationService.AuthenticateUserAsync(model.Email!, model.Password!, model.RememberMe);
                return Redirect("/");
             }
             return View("Index", model);
