@@ -37,13 +37,11 @@ namespace UniDwe.Services
         public async Task<User> CreateUserAsync(User user)
         { 
             return await _registrationRepository.CreateAsync(user);
-            throw new NotImplementedException();
         }
 
         public async Task<User> GetUserByIdAsync(int id)
         {
             return await _registrationRepository.GetByIdAsync(id);
-            throw new NotImplementedException();
         }
     }
 }
