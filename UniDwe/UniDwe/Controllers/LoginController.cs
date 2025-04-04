@@ -23,7 +23,7 @@ namespace UniDwe.Controllers
 
         [HttpPost]
         [Route("/login")]
-        public async Task <IActionResult> IndexSave(LoginViewModel model)
+        public async Task <IActionResult> LogIn(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {

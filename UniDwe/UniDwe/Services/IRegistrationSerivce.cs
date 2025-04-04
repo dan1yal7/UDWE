@@ -21,17 +21,16 @@ namespace UniDwe.Services
         {
             _registrationRepository = registrationRepository;
             _passwordHelper = passwordHelper;
-            
         }
 
         public async Task<User> AuthenticateUserAsync(string email, string password, bool rememberMe)
         {
-
             var user = await _registrationRepository.GetByEmailAsync(email);
-            if (user.PasswordHash != _passwordHelper.HashPassword(user.PasswordHash!, user.Salt!))
+            if (user.PasswordHash != _passwordHelper.HashPassword(password, user.Salt!))
             {
-                _registrationRepository.Login(user.Id);
+                throw new Exception("Incorrect password");
             }
+            _registrationRepository.Login(user.Id);
             return user;
         }
 
