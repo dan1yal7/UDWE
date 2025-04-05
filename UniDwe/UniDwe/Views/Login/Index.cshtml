@@ -10,12 +10,13 @@
         <p>
             <label>Email</label>
             <input name="Email" value="@Model.Email" />
+            <span asp-validation-for="Email"></span>
         </p>
         <p>
             <label>Password</label>
             <input name="Password" type="password" />
+            <span asp-validation-for="Password"></span>
         </p>
         <button>LogIn</button>
     </form>
 </div>
-    
