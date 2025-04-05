@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Internal;
 using UniDwe.AutoMapper;
 using UniDwe.Models.ViewModel;
@@ -26,6 +27,9 @@ namespace UniDwe.Controllers
         [Route("/registration")]
         public async Task <IActionResult> IndexSave(RegistrationViewModel model)
         {
+            if (model.UserName == model.Email) { ModelState.AddModelError("Username", "The Username and Email address must not match."); }
+            if (model.UserName!.Length > 50 || model.UserName!.Length <=5) { ModelState.AddModelError("UserName", "The length of the username must be from 5 to 50 characters"); }
+
             if (ModelState.IsValid)
             {
                 await _registrationService.CreateUserAsync(RegistrationMapper.MapRegistrationViewModelToUserModel(model));
