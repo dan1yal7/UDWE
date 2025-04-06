@@ -29,6 +29,7 @@ namespace UniDwe.Controllers
         {
             if (model.UserName == model.Email) { ModelState.AddModelError("Username", "The Username and Email address must not match."); }
             if (model.UserName!.Length > 50 || model.UserName!.Length <=5) { ModelState.AddModelError("UserName", "The length of the username must be from 5 to 50 characters"); }
+            if (ModelState.IsValid) {
 
             if (ModelState.IsValid)
             {
