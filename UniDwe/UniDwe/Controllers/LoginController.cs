@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
 using UniDwe.AutoMapper;
+using UniDwe.Helpers;
 using UniDwe.Models.ViewModel;
 using UniDwe.Services;
 
@@ -8,10 +11,12 @@ namespace UniDwe.Controllers
     public class LoginController : Controller
     {
         private readonly IRegistrationSerivce _registrationService;
+        private readonly IPasswordHelper _passwordHelper;
 
-        public LoginController(IRegistrationSerivce registrationService)
+        public LoginController(IRegistrationSerivce registrationService, IPasswordHelper passwordHelper)
         {
             _registrationService = registrationService;
+            _passwordHelper = passwordHelper;
         }
 
         [HttpGet]
@@ -25,6 +30,27 @@ namespace UniDwe.Controllers
         [Route("/login")]
         public async Task <IActionResult> LogIn(LoginViewModel model)
         {
+            try
+            {
+                var email = new MailAddress(model.Email!);
+                if (email.Address != model.Email) { ModelState.AddModelError("Email", "Invalid email format"); }
+            }
+            catch
+            {
+                ModelState.AddModelError("Email", "Invalid email format");
+            }
+            try
+            {
+                var user = await _registrationService.GetUserByEmailAsync(model.Email!);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "User not registered/Invalid email address");
+                }
+            }
+            catch
+            {
+                ModelState.AddModelError(string.Empty, "User not registered/Invalid email address");
+            }
             if (ModelState.IsValid)
             {
                await _registrationService.AuthenticateUserAsync(model.Email!, model.Password!, model.RememberMe);

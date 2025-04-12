@@ -11,6 +11,7 @@ namespace UniDwe.Services
         Task<User> CreateUserAsync(User user); 
         Task<User> GetUserByIdAsync(int id);
         Task<User> AuthenticateUserAsync(string email, string password, bool rememberMe);
+        Task<User> GetUserByEmailAsync(string email);
     }
     public class RegistrationService : IRegistrationSerivce
     {
@@ -37,6 +38,11 @@ namespace UniDwe.Services
         public async Task<User> CreateUserAsync(User user)
         { 
             return await _registrationRepository.CreateAsync(user);
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _registrationRepository.GetByEmailAsync(email);
         }
 
         public async Task<User> GetUserByIdAsync(int id)
