@@ -10,7 +10,7 @@ namespace UniDwe.Models.ViewModel
 
         [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
-        public string? Salt { get; set; }
+
         public bool RememberMe { get; set; }
     }
 }
