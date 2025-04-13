@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using UniDwe.Helpers;
 using UniDwe.Infrastructure;
+using UniDwe.Models;
 using UniDwe.Repositories;
 using UniDwe.Services;
 
@@ -20,9 +22,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
 builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IRegistrationSerivce, RegistrationService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddSingleton<IPasswordHelper , PasswordHelper>();
+builder.Services.AddSingleton<IPasswordHelper, PasswordHelper>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-
 
 var app = builder.Build();
 
@@ -39,6 +40,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();   

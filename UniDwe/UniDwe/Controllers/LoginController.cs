@@ -12,11 +12,14 @@ namespace UniDwe.Controllers
     {
         private readonly IRegistrationSerivce _registrationService;
         private readonly IPasswordHelper _passwordHelper;
+        //private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginController(IRegistrationSerivce registrationService, IPasswordHelper passwordHelper)
+        public LoginController(IRegistrationSerivce registrationService, IPasswordHelper passwordHelper
+           /* UserManager<IdentityUser> userManager*/)
         {
             _registrationService = registrationService;
             _passwordHelper = passwordHelper;
+            //_userManager = userManager;
         }
 
         [HttpGet]
@@ -35,9 +38,10 @@ namespace UniDwe.Controllers
                 var email = new MailAddress(model.Email!);
                 if (email.Address != model.Email) { ModelState.AddModelError("Email", "Invalid email format"); }
             }
-            catch
+            catch (Exception ex)
             {
                 ModelState.AddModelError("Email", "Invalid email format");
+                throw new Exception($"Processing failed: {ex.Message}");
             }
             try
             {
@@ -46,10 +50,16 @@ namespace UniDwe.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "User not registered/Invalid email address");
                 }
+                else
+                {
+                    var inputHashed = _passwordHelper.HashPassword(model.Password!, salt:user.Salt!);
+                    if (user.PasswordHash != inputHashed) { ModelState.AddModelError(string.Empty, "Incorrect Password"); }
+                }
             }
-            catch
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "User not registered/Invalid email address");
+                throw new Exception($"Processing failed: {ex.Message}");
             }
             if (ModelState.IsValid)
             {
