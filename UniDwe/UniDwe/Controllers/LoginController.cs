@@ -32,14 +32,15 @@ namespace UniDwe.Controllers
         {
             try
             {
-                var email = new MailAddress(model.Email!);
-                if (email.Address != model.Email) { ModelState.AddModelError("Email", "Invalid email format"); }
+                var enteredEmail = new MailAddress(model.Email!);
+                if (enteredEmail.Address != model.Email) { ModelState.AddModelError("Email", "Invalid email format"); }
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("Email", "Invalid email format");
                 throw new Exception($"Processing failed: {ex.Message}");
             }
+                
             try
             {
                 var user = await _registrationService.GetUserByEmailAsync(model.Email!);
@@ -49,8 +50,8 @@ namespace UniDwe.Controllers
                 }
                 else
                 {
-                    var inputHashed = _passwordHelper.HashPassword(model.Password!, salt:user.Salt!);
-                    if (user.PasswordHash != inputHashed) { ModelState.AddModelError(string.Empty, "Incorrect Password"); }
+                    var enteredPassword = _passwordHelper.HashPassword(model.Password!, salt:user.Salt!);
+                    if (user.PasswordHash != enteredPassword) { ModelState.AddModelError(string.Empty, "Incorrect Password"); }
                 }
             }
             catch (Exception ex)
@@ -58,6 +59,7 @@ namespace UniDwe.Controllers
                 ModelState.AddModelError(string.Empty, "User not registered/Invalid email address");
                 throw new Exception($"Processing failed: {ex.Message}");
             }
+
             if (ModelState.IsValid)
             {
                await _registrationService.AuthenticateUserAsync(model.Email!, model.Password!, model.RememberMe);
