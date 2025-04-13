@@ -12,14 +12,11 @@ namespace UniDwe.Controllers
     {
         private readonly IRegistrationSerivce _registrationService;
         private readonly IPasswordHelper _passwordHelper;
-        //private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginController(IRegistrationSerivce registrationService, IPasswordHelper passwordHelper
-           /* UserManager<IdentityUser> userManager*/)
+        public LoginController(IRegistrationSerivce registrationService, IPasswordHelper passwordHelper)
         {
             _registrationService = registrationService;
             _passwordHelper = passwordHelper;
-            //_userManager = userManager;
         }
 
         [HttpGet]
