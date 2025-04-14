@@ -39,8 +39,34 @@ namespace RegistrationUnitTest
             Assert.NotNull(redirect);
             Assert.Equal("/", redirect.Url);
             mock.Verify(u => u.CreateUserAsync(It.Is<User>(user => user.UserName == registrationViewModel.UserName &&
-            user.Email == registrationViewModel.Email && 
-            user.PasswordHash == registrationViewModel.Password )), Times.Once);
+            user.Email == registrationViewModel.Email &&
+            user.PasswordHash == registrationViewModel.Password)), Times.Once);
+        }
+
+        [Fact]
+        public async Task RegistrationUserReturnsViewResultWithUserModel()
+        {
+            //Arrange
+            var mock = new Mock<IRegistrationSerivce>();
+            var controller = new RegistrationController(mock.Object);
+            controller.ModelState.AddModelError("Username", "Username is required");
+            controller.ModelState.AddModelError("Email", "Email is required");
+            controller.ModelState.AddModelError("Password", "Password is required");
+            RegistrationViewModel registrationViewModel = new RegistrationViewModel()
+            {
+                UserName = "a",  // short
+                Email = "batman20044@sddgdf.com", //should be invalid email 
+                Password = "123" //too short
+            };
+
+            //Act 
+            var result = await controller.IndexSave(registrationViewModel);
+
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(registrationViewModel, viewResult?.Model);
+
+
         }
     }
 }
