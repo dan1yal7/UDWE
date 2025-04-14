@@ -39,8 +39,8 @@ namespace RegistrationUnitTest
             Assert.NotNull(redirect);
             Assert.Equal("/", redirect.Url);
             mock.Verify(u => u.CreateUserAsync(It.Is<User>(user => user.UserName == registrationViewModel.UserName &&
-             user.Email == registrationViewModel.Email && 
-             user.PasswordHash == registrationViewModel.Password )), Times.Once);
+            user.Email == registrationViewModel.Email && 
+            user.PasswordHash == registrationViewModel.Password )), Times.Once);
         }
     }
 }
