@@ -18,7 +18,7 @@ namespace UniDwe.Services
         private readonly IRegistrationRepository _registrationRepository;
         private readonly IPasswordHelper _passwordHelper;
 
-        public RegistrationService(IRegistrationRepository registrationRepository, IPasswordHelper passwordHelper)
+        public RegistrationService(IRegistrationRepository registrationRepository, ILogger<RegistrationService> @object, IPasswordHelper passwordHelper)
         {
             _registrationRepository = registrationRepository;
             _passwordHelper = passwordHelper;

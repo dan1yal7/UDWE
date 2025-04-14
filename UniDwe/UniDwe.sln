@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniDwe", "UniDwe\UniDwe.csproj", "{8963A0AE-B10F-4AA0-9812-775CACB87AEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{E2D54DB4-08BC-4ACA-8DE5-270C67747FDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUnitTest", "IntegrationTests\RegistrationUnitTest.csproj", "{E2D54DB4-08BC-4ACA-8DE5-270C67747FDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
