@@ -21,7 +21,7 @@ namespace RegistrationUnitTest
     public class LoginControllerTest
     { 
         [Fact]
-        public async Task GetUserByEmailReturnUserNotRegisteredIfIdIsNull()
+        public async Task GetUserByEmailReturnAuthorizedIfUserFound()
         {
             //Arrange 
             var mock = new Mock<IRegistrationSerivce>();
