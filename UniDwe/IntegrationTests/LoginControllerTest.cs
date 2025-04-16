@@ -55,5 +55,42 @@ namespace RegistrationUnitTest
             var redirect = Assert.IsType<RedirectResult>(result);
             Assert.Equal("/", redirect.Url);
         }
+
+        [Fact]
+        public async Task GetUserByEmailReturnErrorIfPasswordIsIncorrect()
+        {
+            //Arrange
+            var mock = new Mock<IRegistrationSerivce>();
+            var passwordHelper = new PasswordHelper();
+            var controller = new LoginController(mock.Object, passwordHelper);
+
+            var email = "test@email.com";
+            var password = "wrong_password";
+            var salt = "random_salt";
+            var hashed = passwordHelper.HashPassword("correct_password", salt);
+
+            mock.Setup(x => x.GetUserByEmailAsync(email)).ReturnsAsync(new User
+            {
+                Email = email,
+                PasswordHash = hashed,
+                Salt = salt
+            });
+
+            var model = new LoginViewModel
+            {
+                Email = email,
+                Password = password,
+                RememberMe = false
+            };
+
+            //Act 
+            var result = await controller.LogIn(model);
+
+            //Assert 
+            var view = Assert.IsType<ViewResult>(result);
+            Assert.Equal(model, view.Model);
+            Assert.False(controller.ModelState.IsValid);
+
+        }
     }
 }
