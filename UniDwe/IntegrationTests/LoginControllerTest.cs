@@ -87,10 +87,38 @@ namespace RegistrationUnitTest
             var result = await controller.LogIn(model);
 
             //Assert 
-            var view = Assert.IsType<ViewResult>(result);
-            Assert.Equal(model, view.Model);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(model, viewResult?.Model);
             Assert.False(controller.ModelState.IsValid);
 
+        }
+
+        [Fact] 
+        public async Task GetUserByEmailReturnNotRegisteredOrNotFoundIfGmailIsNotFound()
+        {
+            //Arrange
+            var mock = new Mock<IRegistrationSerivce>();
+            var passwordHelper = new PasswordHelper();
+            var controller = new LoginController(mock.Object, passwordHelper);
+
+            var email = "notfoundTest@gmai.com";
+            var password = "1234567899";
+
+            mock.Setup(x => x.GetUserByEmailAsync(email)).ReturnsAsync((User)null!);
+
+            var model = new LoginViewModel
+            {
+                Email = email,
+                Password = password,
+            };
+
+            //Act 
+            var result = await controller.LogIn(model);
+
+            //Assert 
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(model, viewResult?.Model);
+            Assert.False(controller.ModelState.IsValid);
         }
     }
 }
