@@ -1,7 +1,10 @@
-﻿namespace UniDwe.Session
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UniDwe.Session
 {
     public class DbSession
     {
+        [Key]
         public Guid SessionId { get; set; }
         public string? SessionData { get; set; }
         public DateTime Created { get; set; }

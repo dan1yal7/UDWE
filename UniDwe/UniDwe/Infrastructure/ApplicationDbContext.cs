@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniDwe.Models;
+using UniDwe.Session;
 
 namespace UniDwe.Infrastructure
 {
@@ -12,6 +13,7 @@ namespace UniDwe.Infrastructure
         public DbSet<User> users { get; set; }
         public DbSet<Event> events { get; set; }
         public DbSet<Registration> registrations { get; set; }
+        public DbSet<DbSession> sessions { get; set; }
 
     }
 }
