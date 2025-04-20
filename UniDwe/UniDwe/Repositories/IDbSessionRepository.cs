@@ -8,7 +8,7 @@ namespace UniDwe.Repositories
     {
         Task<DbSession> GetSessionAsync(Guid sessionId);
         Task<int> UpdateSessionAsync(DbSession session);
-        Task<int> CreateSessionAsync(Guid sessionId);
+        Task<int> CreateSessionAsync(DbSession session);
     }
 
     public class DbSessionRepository : IDbSessionRepository
@@ -20,16 +20,15 @@ namespace UniDwe.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<int> CreateSessionAsync(Guid sessionId)
+        public async Task<int> CreateSessionAsync(DbSession session)
         {
-            sessionId = Guid.NewGuid();
-            var createdSession = await _dbContext.AddAsync(sessionId);
+            var createdSession = await _dbContext.AddAsync(session);
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<DbSession> GetSessionAsync(Guid sessionId)
+        public async Task<DbSession?> GetSessionAsync(Guid sessionId)
         { 
-            return await _dbContext.sessions.FindAsync(sessionId) ?? throw new Exception();
+            return _dbContext.sessions.FirstOrDefault(s => s.SessionId == sessionId);
         }
 
         public async Task<int> UpdateSessionAsync(DbSession session)

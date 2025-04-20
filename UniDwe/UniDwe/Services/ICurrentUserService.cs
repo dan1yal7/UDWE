@@ -4,21 +4,21 @@ namespace UniDwe.Services
 {
     public interface ICurrentUserService
     {
-        bool IsLoggedIn();
+        Task <bool> IsLoggedIn();
     }
 
     public class CurrentUserService : ICurrentUserService
     {
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IDbSessionService _dbSessionService;
 
-        public CurrentUserService(IHttpContextAccessor contextAccessor)
+        public CurrentUserService(IDbSessionService dbSessionService)
         {
-            _contextAccessor = contextAccessor;
+           _dbSessionService = dbSessionService;
         } 
 
-        public bool IsLoggedIn()
+        public async Task <bool> IsLoggedIn()
         {
-            return _contextAccessor.HttpContext?.Session.Get(AuthConstants.AUTH_SESSION_PARAM_NAME) != null;
+            return await _dbSessionService.IsLoggedInAsync();
         }
     }
 }

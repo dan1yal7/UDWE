@@ -16,9 +16,10 @@ namespace UniDwe.Controllers
             _currentUserService = currentUserService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_currentUserService.IsLoggedIn());
+           var isLoggedIn = await _currentUserService.IsLoggedIn();
+           return View(isLoggedIn);
         }
 
         public IActionResult Privacy()
