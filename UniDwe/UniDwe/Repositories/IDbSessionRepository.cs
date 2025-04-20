@@ -1,4 +1,5 @@
-﻿using UniDwe.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using UniDwe.Infrastructure;
 using UniDwe.Session;
 
 namespace UniDwe.Repositories
@@ -6,8 +7,8 @@ namespace UniDwe.Repositories
     public interface IDbSessionRepository
     {
         Task<DbSession> GetSessionAsync(Guid sessionId);
-        Task<int> UpdateSession(DbSession session);
-        Task<int> CreateSession(Guid sessionId);
+        Task<int> UpdateSessionAsync(DbSession session);
+        Task<int> CreateSessionAsync(Guid sessionId);
     }
 
     public class DbSessionRepository : IDbSessionRepository
@@ -19,19 +20,21 @@ namespace UniDwe.Repositories
             _dbContext = dbContext;
         }
 
-        public Task<int> CreateSession(Guid sessionId)
+        public async Task<int> CreateSessionAsync(Guid sessionId)
         {
-            throw new NotImplementedException();
+            sessionId = Guid.NewGuid();
+            var createdSession = await _dbContext.AddAsync(sessionId);
+            return await _dbContext.SaveChangesAsync();
         }
 
-        public Task<DbSession> GetSessionAsync(Guid sessionId)
-        {
-            throw new NotImplementedException();
+        public async Task<DbSession> GetSessionAsync(Guid sessionId)
+        { 
+            return await _dbContext.sessions.FindAsync(sessionId) ?? throw new Exception();
         }
 
-        public Task<int> UpdateSession(DbSession session)
+        public async Task<int> UpdateSessionAsync(DbSession session)
         {
-            throw new NotImplementedException();
+            return await _dbContext.sessions.ExecuteUpdateAsync(session => session);
         }
     }
 }

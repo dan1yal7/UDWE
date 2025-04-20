@@ -1,29 +1,37 @@
-﻿using UniDwe.Session;
+﻿using UniDwe.Repositories;
+using UniDwe.Session;
 
 namespace UniDwe.Services
 {
     public interface IDbSessionService
     {
         Task<DbSession> GetSessionAsync(Guid sessionId);
-        Task<int> UpdateSession(DbSession session);
-        Task<int> CreateSession(Guid sessionId);
+        Task<int> UpdateSessionAsync(DbSession session);
+        Task<int> CreateSessionAsync(Guid sessionId);
     }
 
     public class DbSessionService : IDbSessionService
     {
-        public Task<int> CreateSession(Guid sessionId)
+        private readonly IDbSessionRepository _dbSessionRepository;
+
+        public DbSessionService(IDbSessionRepository dbSessionRepository)
         {
-            throw new NotImplementedException();
+            _dbSessionRepository = dbSessionRepository;
         }
 
-        public Task<DbSession> GetSessionAsync(Guid sessionId)
+        public async Task<int> CreateSessionAsync(Guid sessionId)
         {
-            throw new NotImplementedException();
+            return await _dbSessionRepository.CreateSessionAsync(sessionId);
         }
 
-        public Task<int> UpdateSession(DbSession session)
+        public async Task<DbSession> GetSessionAsync(Guid sessionId)
         {
-            throw new NotImplementedException();
+            return await _dbSessionRepository.GetSessionAsync(sessionId);
+        }
+
+        public async Task<int> UpdateSessionAsync(DbSession session)
+        {
+            return await _dbSessionRepository.UpdateSessionAsync(session);
         }
     }
 }
