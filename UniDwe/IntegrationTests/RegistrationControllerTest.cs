@@ -44,7 +44,7 @@ namespace RegistrationUnitTest
         }
 
         [Fact]
-        public async Task RegistrationUserReturnsViewResultWithUserModel()
+        public async Task ReturnsViewResultWithErrorIfUserDidNotPassValidation()
         {
             //Arrange
             var mock = new Mock<IRegistrationSerivce>();
