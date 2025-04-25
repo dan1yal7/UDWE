@@ -31,7 +31,7 @@ namespace UniDwe.Services
             {
                 throw new Exception("Incorrect password");
             }
-            _registrationRepository.Login(user.Id);
+           await _registrationRepository.Login(user.Id);
             return user;
         }
 
