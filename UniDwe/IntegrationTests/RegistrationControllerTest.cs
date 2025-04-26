@@ -54,9 +54,9 @@ namespace RegistrationUnitTest
             controller.ModelState.AddModelError("Password", "Password is required");
             RegistrationViewModel registrationViewModel = new RegistrationViewModel()
             {
-                UserName = "a",  // short
+                UserName = "a",  // short username
                 Email = "batman20044@sddgdf.com", //should be invalid email 
-                Password = "123" //too short
+                Password = "123" //too short password
             };
 
             //Act 
