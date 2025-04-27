@@ -28,6 +28,7 @@ namespace UniDwe.Controllers
 
         [HttpPost]
         [Route("/login")]
+        [ValidateAntiForgeryToken]
         public async Task <IActionResult> LogIn(LoginViewModel model)
         {
             try
