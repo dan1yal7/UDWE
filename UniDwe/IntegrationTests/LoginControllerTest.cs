@@ -47,7 +47,11 @@ namespace RegistrationUnitTest
                 Password = password,
                 RememberMe = false
             };
-            
+
+            var urlHelperMock = new Mock<IUrlHelper>();
+            urlHelperMock.Setup(x => x.IsLocalUrl(It.IsAny<string>())).Returns(true);
+            controller.Url = urlHelperMock.Object;
+
             //Act
             var result = await controller.LogIn(model);
 

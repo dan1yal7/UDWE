@@ -64,9 +64,21 @@ namespace UniDwe.Controllers
             if (ModelState.IsValid)
             {
                await _registrationService.AuthenticateUserAsync(model.Email!, model.Password!, model.RememberMe);
-               return Redirect("/");
+               return RedirectToLocalPage("/");
             }
             return View("Index", model);
+        }
+
+        public IActionResult RedirectToLocalPage(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
         }
     }
 }
