@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Net.Mail;
 using UniDwe.AutoMapper;
+using UniDwe.Infrastructure;
 using UniDwe.Models.ViewModel;
 using UniDwe.Services;
 
@@ -12,9 +13,11 @@ namespace UniDwe.Controllers
     public class RegistrationController : Controller
     {
         private readonly IRegistrationSerivce _registrationService;
-        public RegistrationController(IRegistrationSerivce registrationSerivce) 
+        private readonly ApplicationDbContext _dbContext;
+        public RegistrationController(IRegistrationSerivce registrationSerivce, ApplicationDbContext dbContext) 
         {
             _registrationService = registrationSerivce;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
@@ -34,6 +37,12 @@ namespace UniDwe.Controllers
 
             var email = new MailAddress(model.Email!);
             if (email.Address != model.Email) { ModelState.AddModelError("Email", "Invalid email format"); }
+
+            var isEmailAlreadyExists = _dbContext.users.Any(x => x.Email == model.Email);
+            if (isEmailAlreadyExists)
+            {
+                ModelState.AddModelError("Email", "User with this email already exists");
+            }
 
             if (ModelState.IsValid)
             {
