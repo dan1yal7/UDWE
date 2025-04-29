@@ -69,6 +69,7 @@ namespace UniDwe.Controllers
             return View("Index", model);
         }
 
+        //
         public IActionResult RedirectToLocalPage(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
