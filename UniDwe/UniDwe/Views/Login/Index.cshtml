@@ -6,8 +6,7 @@
 }
 
 <div>
-    <form action="/login" method="post">
-        @Html.AntiForgeryToken()
+    <form action="/login" method="post" asp-antiforgery="true">
         <div asp-validation-summary="All"></div>
         <p>
             <label>Email</label>
