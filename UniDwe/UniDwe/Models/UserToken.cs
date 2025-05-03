@@ -8,6 +8,5 @@ namespace UniDwe.Models
         public Guid UserTokenId { get; set; }
         public int UserId { get; set; }
         public DateTime Created {  get; set; }
-
     }
 }

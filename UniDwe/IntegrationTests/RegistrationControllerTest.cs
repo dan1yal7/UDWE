@@ -78,7 +78,6 @@ namespace RegistrationUnitTest
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(registrationViewModel, viewResult?.Model);
- 
         }
     }
 }
