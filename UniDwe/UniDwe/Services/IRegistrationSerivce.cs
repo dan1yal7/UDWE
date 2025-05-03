@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using UniDwe.Helpers;
 using UniDwe.Models;
 using UniDwe.Repositories;
+using UniDwe.Session;
 
 namespace UniDwe.Services
 {
@@ -17,11 +18,21 @@ namespace UniDwe.Services
     {
         private readonly IRegistrationRepository _registrationRepository;
         private readonly IPasswordHelper _passwordHelper;
+        private readonly IDbSessionService _dbSessionService;
+        private readonly IWebCookieHelper _webCookieHelper;
+        private readonly IUserToken _userToken;
 
-        public RegistrationService(IRegistrationRepository registrationRepository, ILogger<RegistrationService> @object, IPasswordHelper passwordHelper)
+        public RegistrationService(IRegistrationRepository registrationRepository,
+            IPasswordHelper passwordHelper,
+            IUserToken userToken,
+            IWebCookieHelper webCookieHelper,
+            IDbSessionService dbSessionService)
         {
             _registrationRepository = registrationRepository;
             _passwordHelper = passwordHelper;
+            _userToken = userToken;
+            _webCookieHelper = webCookieHelper;
+            _dbSessionService = dbSessionService;
         }
 
         public async Task<User> AuthenticateUserAsync(string email, string password, bool rememberMe)
@@ -31,7 +42,13 @@ namespace UniDwe.Services
             {
                 throw new Exception("Incorrect password");
             }
-           await _registrationRepository.Login(user.Id);
+            await _registrationRepository.Login(user.Id);
+
+            if (rememberMe)
+            {
+              Guid tokenId =  await _userToken.CreateTokenAsync(user.Id!);
+              _webCookieHelper.AddSecure(AuthConstants.RememberMeCookieName, tokenId.ToString(), 30);
+            }
             return user;
         }
 

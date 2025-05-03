@@ -22,13 +22,13 @@ namespace UniDwe.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        private void CreateSessionCookie(Guid sessionId)
+        public void CreateSessionCookie(Guid sessionId)
         {
             CookieOptions options = new CookieOptions();
             options.Path = "/";
             options.HttpOnly = true;
             options.Secure = true;
-            options.Expires = DateTimeOffset.UtcNow.AddMinutes(20);
+            options.Expires = DateTimeOffset.UtcNow.AddSeconds(5);
            _httpContextAccessor?.HttpContext?.Response.Cookies.Delete(AuthConstants.SessionCookieName);
            _httpContextAccessor?.HttpContext?.Response.Cookies.Append(AuthConstants.SessionCookieName, sessionId.ToString(), options);
         }
@@ -55,12 +55,10 @@ namespace UniDwe.Services
 
             Guid sessionId;
             var cookie = _httpContextAccessor.HttpContext?.Request.Cookies.FirstOrDefault(m => m.Key == AuthConstants.SessionCookieName);
-            if (cookie != null && cookie.Value.Value != null)
-            {
-                sessionId = Guid.Parse(cookie.Value.Value);
-            }
-            else
-                sessionId = Guid.NewGuid();
+
+            if (cookie != null && Guid.TryParse(cookie.Value.Value, out sessionId)) { } 
+            else  sessionId = Guid.NewGuid(); { } 
+
             var data = await _dbSessionRepository.GetSessionAsync(sessionId);
             if (data == null)
             {

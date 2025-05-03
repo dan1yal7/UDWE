@@ -20,6 +20,8 @@ builder.Services.AddSingleton<IPasswordHelper, PasswordHelper>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IDbSessionRepository, DbSessionRepository>();
 builder.Services.AddScoped<IDbSessionService, DbSessionService>();
+builder.Services.AddScoped<IUserToken, UniDwe.Repositories.UserTok>();
+builder.Services.AddScoped<IWebCookieHelper , WebCookieHelper>();
 
 var app = builder.Build();
 

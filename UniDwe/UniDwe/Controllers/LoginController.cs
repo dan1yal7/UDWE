@@ -63,7 +63,7 @@ namespace UniDwe.Controllers
 
             if (ModelState.IsValid)
             {
-               await _registrationService.AuthenticateUserAsync(model.Email!, model.Password!, model.RememberMe);
+               await _registrationService.AuthenticateUserAsync(model.Email!, model.Password!, model.RememberMe == true);
                return RedirectToLocalPage("/");
             }
             return View("Index", model);
