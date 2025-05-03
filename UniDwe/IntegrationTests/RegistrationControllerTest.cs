@@ -25,17 +25,14 @@ namespace RegistrationUnitTest
         {
             //Arrange
             var mock = new Mock<IRegistrationSerivce>();
-            
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "TestDb").Options;
-            var context = new ApplicationDbContext(options);
 
-            context.users.Add(new User { Email = "Batman2004@gmail.com" });
-            context.SaveChanges();
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "SuccessfulRegistrationDb").Options;
+            var context = new ApplicationDbContext(options);
             var controller = new RegistrationController(mock.Object, context);
             RegistrationViewModel registrationViewModel = new RegistrationViewModel()
             {
                 UserName = "Bruce Wayne",
-                Email = "Batman2004@gmail.com",
+                Email = "bruce@wayne.com",
                 Password = "1234567890"
             };
 
@@ -43,9 +40,12 @@ namespace RegistrationUnitTest
             var result = await controller.IndexSave(registrationViewModel);
 
             //Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.False(controller.ModelState.IsValid);
-            Assert.True(controller.ModelState.ContainsKey("Email"));
+            var redirect = Assert.IsType<RedirectResult>(result);
+            Assert.NotNull(redirect);
+            Assert.Equal("/", redirect.Url);
+            mock.Verify(u => u.CreateUserAsync(It.Is<User>(user => user.UserName == registrationViewModel.UserName &&
+            user.Email == registrationViewModel.Email &&
+            user.PasswordHash == registrationViewModel.Password)), Times.Once); ;
         }
 
         [Fact]
