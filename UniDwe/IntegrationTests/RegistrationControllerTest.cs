@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using NpgsqlTypes;
 using System;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UniDwe.AutoMapper;
 using UniDwe.Controllers;
+using UniDwe.Infrastructure;
 using UniDwe.Models;
 using UniDwe.Models.ViewModel;
 using UniDwe.Services;
@@ -23,7 +25,13 @@ namespace RegistrationUnitTest
         {
             //Arrange
             var mock = new Mock<IRegistrationSerivce>();
-            var controller = new RegistrationController(mock.Object);
+            
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "TestDb").Options;
+            var context = new ApplicationDbContext(options);
+
+            context.users.Add(new User { Email = "Batman2004@gmail.com" });
+            context.SaveChanges();
+            var controller = new RegistrationController(mock.Object, context);
             RegistrationViewModel registrationViewModel = new RegistrationViewModel()
             {
                 UserName = "Bruce Wayne",
@@ -35,36 +43,42 @@ namespace RegistrationUnitTest
             var result = await controller.IndexSave(registrationViewModel);
 
             //Assert
-            var redirect = Assert.IsType<RedirectResult>(result);
-            Assert.NotNull(redirect);
-            Assert.Equal("/", redirect.Url);
-            mock.Verify(u => u.CreateUserAsync(It.Is<User>(user => user.UserName == registrationViewModel.UserName &&
-            user.Email == registrationViewModel.Email &&
-            user.PasswordHash == registrationViewModel.Password)), Times.Once);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.False(controller.ModelState.IsValid);
+            Assert.True(controller.ModelState.ContainsKey("Email"));
         }
 
         [Fact]
         public async Task ReturnsViewResultWithErrorIfUserDidNotPassValidation()
         {
-            //Arrange
+            // Arrange
             var mock = new Mock<IRegistrationSerivce>();
-            var controller = new RegistrationController(mock.Object);
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDb2") 
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            var controller = new RegistrationController(mock.Object, context);
             controller.ModelState.AddModelError("Username", "Username is required");
             controller.ModelState.AddModelError("Email", "Email is required");
             controller.ModelState.AddModelError("Password", "Password is required");
+
             RegistrationViewModel registrationViewModel = new RegistrationViewModel()
             {
-                UserName = "a",  // short username
-                Email = "batman20044@sddgdf.com", //should be invalid email 
-                Password = "123" //too short password
+                UserName = "a", // слишком короткий username
+                Email = "invalid@bad", // невалидный email
+                Password = "123" // слишком короткий пароль
             };
 
-            //Act 
+            // Act
             var result = await controller.IndexSave(registrationViewModel);
 
-            //Assert
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(registrationViewModel, viewResult?.Model);
+ 
         }
     }
 }

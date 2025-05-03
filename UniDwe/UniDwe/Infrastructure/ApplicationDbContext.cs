@@ -14,6 +14,7 @@ namespace UniDwe.Infrastructure
         public DbSet<Event> events { get; set; }
         public DbSet<Registration> registrations { get; set; }
         public DbSet<DbSession> sessions { get; set; }
+        public DbSet<UserToken> usertokens { get; set; }
 
     }
 }
