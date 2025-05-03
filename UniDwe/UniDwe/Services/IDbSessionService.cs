@@ -28,7 +28,7 @@ namespace UniDwe.Services
             options.Path = "/";
             options.HttpOnly = true;
             options.Secure = true;
-            options.Expires = DateTimeOffset.UtcNow.AddSeconds(5);
+            options.Expires = DateTimeOffset.UtcNow.AddMinutes(20);
            _httpContextAccessor?.HttpContext?.Response.Cookies.Delete(AuthConstants.SessionCookieName);
            _httpContextAccessor?.HttpContext?.Response.Cookies.Append(AuthConstants.SessionCookieName, sessionId.ToString(), options);
         }
