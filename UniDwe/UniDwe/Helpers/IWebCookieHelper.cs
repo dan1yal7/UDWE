@@ -24,7 +24,7 @@ namespace UniDwe.Helpers
             options.Path = "/";
             options.HttpOnly = true;
             options.Secure = true;
-            if (days > 0) { options.Expires = DateTimeOffset.UtcNow.AddDays(30); }
+            if (days > 0) { options.Expires = DateTimeOffset.UtcNow.AddDays(days); }
             _httpContextAccessor?.HttpContext?.Response.Cookies.Append(cookieName, value, options);
         }
 

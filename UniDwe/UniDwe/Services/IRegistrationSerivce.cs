@@ -47,7 +47,7 @@ namespace UniDwe.Services
             if (rememberMe)
             {
               Guid tokenId =  await _userToken.CreateTokenAsync(user.Id!);
-              _webCookieHelper.AddSecure(AuthConstants.RememberMeCookieName, tokenId.ToString(), 30);
+              _webCookieHelper.AddSecure(AuthConstants.RememberMeCookieName, tokenId.ToString(), AuthConstants.RememberMeDays);
             }
             return user;
         }
