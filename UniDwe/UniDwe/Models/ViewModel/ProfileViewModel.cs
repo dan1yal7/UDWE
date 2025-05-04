@@ -1,8 +1,14 @@
-﻿namespace UniDwe.Models.ViewModel
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UniDwe.Models.ViewModel
 {
     public class ProfileViewModel
     {
-        public string? Name { get; set; }
-        public string? Email { get; set; }
+        [Required]
+        public string? ProfileName { get; set; }
+        [Required]
+        public string? FirstName { get; set; }
+        [Required]
+        public string? LastName { get; set; }
     }
 }

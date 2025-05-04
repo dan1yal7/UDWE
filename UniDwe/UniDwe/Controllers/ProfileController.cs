@@ -20,6 +20,7 @@ namespace UniDwe.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task <IActionResult> Profile(ProfileViewModel model)
         {
+
             return View();
         }
     }
