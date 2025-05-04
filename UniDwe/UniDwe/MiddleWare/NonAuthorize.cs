@@ -6,9 +6,9 @@ using UniDwe.Services;
 namespace UniDwe.MiddleWare
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class SiteAuthorize : Attribute, IAsyncAuthorizationFilter
+    public class NonAuthorize : Attribute, IAsyncAuthorizationFilter
     {
-        public SiteAuthorize()
+        public NonAuthorize()
         {
 
         }
@@ -22,9 +22,9 @@ namespace UniDwe.MiddleWare
             }
 
             bool isLogged = await currentUser.IsLoggedIn();
-            if (isLogged == false)
+            if (isLogged)
             {
-                filterContext.Result = new RedirectResult("/login");
+                filterContext.Result = new RedirectResult("/");
                 return;
             }
         }

@@ -5,9 +5,11 @@ using UniDwe.AutoMapper;
 using UniDwe.Helpers;
 using UniDwe.Models.ViewModel;
 using UniDwe.Services;
+using UniDwe.MiddleWare;
 
 namespace UniDwe.Controllers
 {
+    [NonAuthorize()]
     public class LoginController : Controller
     {
         private readonly IRegistrationSerivce _registrationService;

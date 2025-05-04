@@ -6,9 +6,11 @@ using UniDwe.AutoMapper;
 using UniDwe.Infrastructure;
 using UniDwe.Models.ViewModel;
 using UniDwe.Services;
+using UniDwe.MiddleWare;
 
 namespace UniDwe.Controllers
 {
+    [NonAuthorize]
     [Controller]
     public class RegistrationController : Controller
     {
