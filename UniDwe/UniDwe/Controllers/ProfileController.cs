@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UniDwe.MiddleWare;
 using UniDwe.Models.ViewModel;
 
 namespace UniDwe.Controllers
 {
-    [Authorize()]
+    [SiteAuthorize()]
     [Controller]
     public class ProfileController : Controller
     {

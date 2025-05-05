@@ -24,7 +24,7 @@ namespace UniDwe.MiddleWare
             bool isLogged = await currentUser.IsLoggedIn();
             if (isLogged == false)
             {
-                filterContext.Result = new RedirectResult("/login");
+                filterContext.Result = new RedirectResult("/");
                 return;
             }
         }

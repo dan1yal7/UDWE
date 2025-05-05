@@ -1,0 +1,34 @@
+﻿@using UniDwe.Models.ViewModel
+
+@model ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+<div>
+    <form action="/profile" method="post" enctype="multipart/form-data" >
+
+
+        @Html.AntiForgeryToken()
+        <p>
+            <label>Profilename</label>
+            <input name="ProfileName" type="text" value="@Model.ProfileName" />
+            <span asp-validation-for="ProfileName" class="text-danger"></span>
+        </p> 
+        <p>
+            <label>Firstname</label>
+            <input name="FirstName" type="text" value="@Model.FirstName" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </p>
+        <p>
+            <label>Lastname</label>
+            <input name="LastName" type="text" value="@Model.LastName" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </p>
+        <p>
+           <input type="file" name="file" />
+        </p>
+
+        <button>Login</button>
+    </form>
+</div>
