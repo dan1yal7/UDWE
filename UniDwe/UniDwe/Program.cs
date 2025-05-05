@@ -22,6 +22,8 @@ builder.Services.AddScoped<IDbSessionRepository, DbSessionRepository>();
 builder.Services.AddScoped<IDbSessionService, DbSessionService>();
 builder.Services.AddScoped<IUserToken, UniDwe.Repositories.UserTok>();
 builder.Services.AddScoped<IWebCookieHelper , WebCookieHelper>();
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 var app = builder.Build();
 

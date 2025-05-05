@@ -7,6 +7,7 @@ namespace UniDwe.Services
     public interface ICurrentUserService
     {
         Task <bool> IsLoggedIn();
+        Task<int?> GetCurrentUserIdAsync();
     }
 
     public class CurrentUserService : ICurrentUserService
@@ -52,6 +53,11 @@ namespace UniDwe.Services
             int? userId = await _userToken.GetTokenAsync((Guid)tokenGuid);
             return userId;
            //Guid token
+        }
+
+        public async Task<int?> GetCurrentUserIdAsync()
+        {
+           return await _dbSessionService.GetUserIdAsync();
         }
     }
 }

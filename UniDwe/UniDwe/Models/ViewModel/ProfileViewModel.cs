@@ -10,5 +10,7 @@ namespace UniDwe.Models.ViewModel
         public string? FirstName { get; set; }
         [Required]
         public string? LastName { get; set; }
+
+        public string? ProfileImage { get; set; }
     }
 }
