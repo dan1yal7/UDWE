@@ -14,6 +14,7 @@ namespace UniDwe.AutoMapper
         {
             return new Profile()
             {
+               ProfileId = profileViewModel.ProfileId,
                ProfileName = profileViewModel.ProfileName,
                FirstName = profileViewModel.FirstName,
                LastName = profileViewModel.LastName,
@@ -30,6 +31,7 @@ namespace UniDwe.AutoMapper
         {
             return new ProfileViewModel()
             {
+               ProfileId = profile.ProfileId,
                ProfileName = profile.ProfileName,
                FirstName = profile.FirstName,
                LastName = profile.LastName,

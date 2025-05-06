@@ -9,18 +9,18 @@ namespace UniDwe.Repositories
     {
        Task<Profile> CreateProfileAsync(Profile profile);
        Task UpdateProfileAsync(int profileId);
-       Task<IEnumerable<Profile>> GetProfileAsync(int userId);
+       Task<IEnumerable<Profile>> GetProfileAsync(int? userId);
     }
 
     public class ProfileRepository : IProfileRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IRegistrationSerivce _registrationSerivce;
+        private readonly ILogger<ProfileRepository> _logger;
 
-        public ProfileRepository(ApplicationDbContext dbContext, IRegistrationSerivce registrationSerivce)
+        public ProfileRepository(ApplicationDbContext dbContext, IRegistrationSerivce registrationSerivce, ILogger<ProfileRepository> logger)
         {
             _dbContext = dbContext;
-            _registrationSerivce = registrationSerivce;
+            _logger = logger;
         }
 
         public async Task<Profile> CreateProfileAsync(Profile profile)
@@ -37,15 +37,20 @@ namespace UniDwe.Repositories
             return profile;
         }
 
-        public async Task<IEnumerable<Profile>> GetProfileAsync(int userId)
+        public async Task<IEnumerable<Profile>> GetProfileAsync(int? userId)
         {
             try
             {
-               var profile = await _dbContext.profiles.Where(p => p.UserId == userId).ToListAsync();
-               return profile!;
+                var profile = await _dbContext.profiles.Where(p => p.UserId == userId).ToListAsync();
+                if (profile.Count == 0)
+                {
+                    _logger.LogError($"{profile}");
+                }
+                return profile!;
             }
             catch(Exception ex)
-            {
+            { 
+                _logger.LogError($"Smt wrong bro: {ex.Message}");
                 throw new Exception($"Getting profile process FAILED: {ex.Message}");
             }
         }
@@ -68,6 +73,7 @@ namespace UniDwe.Repositories
                       LastName = updatedProfile!.LastName,
                       ProfileImage = updatedProfile!.ProfileImage,
                     };
+                   await this.CreateProfileAsync(profile);
                 }
                 await _dbContext.SaveChangesAsync();
             }

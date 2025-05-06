@@ -7,7 +7,7 @@ namespace UniDwe.Services
     {
         Task<Profile> AddProfileAsync(Profile profile);
         Task<IEnumerable<Profile>> GetProfileAsync(int userId);
-        Task UpdateProfileAsync(int  profileId);
+        Task UpdateProfileAsync(int profileId);
     }
     public class ProfileService : IProfileService
     {
