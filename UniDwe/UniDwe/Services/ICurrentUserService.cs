@@ -8,6 +8,7 @@ namespace UniDwe.Services
     {
         Task <bool> IsLoggedIn();
         Task<int?> GetCurrentUserIdAsync();
+        Task<int?> GetUserIdByToken();
     }
 
     public class CurrentUserService : ICurrentUserService

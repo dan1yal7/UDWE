@@ -37,9 +37,9 @@ namespace UniDwe.Controllers
             Profile? profileModel = profiles.FirstOrDefault();
             if (profileModel != null)
             {
-                ProfileMapper.MapProfileModelToProfileViewModel(profileModel); new ProfileViewModel();
+                ProfileMapper.MapProfileModelToProfileViewModel(profileModel);
             }    
-            return View(new ProfileViewModel());
+            return View(ProfileMapper.MapProfileModelToProfileViewModel(profileModel!));
         }
 
         [HttpPost]
@@ -55,11 +55,7 @@ namespace UniDwe.Controllers
                     throw new ArgumentNullException(nameof(userId), "User not found");
                 }
                 var profiles = await _profileService.GetProfileAsync((int)userId);
-                if (!profiles.Any(m => m.ProfileId == model.ProfileId))
-                {
-
-                    throw new Exception();
-                }
+                var existingProfile = profiles.FirstOrDefault(m => m.ProfileId == model.ProfileId);
 
                 if (ModelState.IsValid)
                 {
@@ -73,6 +69,16 @@ namespace UniDwe.Controllers
                         await wbf.UploadAndResizeImage(Request.Form.Files[0].OpenReadStream(), filename, 800, 600);
                         profileModel.ProfileImage = filename;
                         await _profileService.UpdateProfileAsync(profileModel.ProfileId);
+                    }
+                    if (existingProfile == null)
+                    {
+                        await _profileService.AddProfileAsync(profileModel);
+                        return Redirect("/");
+                    }
+                    else
+                    {
+                        await _profileService.UpdateProfileAsync(profileModel.ProfileId);
+                        return Redirect("/");
                     }
                 }
             }
