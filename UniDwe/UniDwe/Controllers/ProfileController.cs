@@ -37,9 +37,9 @@ namespace UniDwe.Controllers
             Profile? profileModel = profiles.FirstOrDefault();
             if (profileModel != null)
             {
-                ProfileMapper.MapProfileModelToProfileViewModel(profileModel);
+                return View(ProfileMapper.MapProfileModelToProfileViewModel(profileModel));
             }    
-            return View(ProfileMapper.MapProfileModelToProfileViewModel(profileModel!));
+            return View(new ProfileViewModel());
         }
 
         [HttpPost]
