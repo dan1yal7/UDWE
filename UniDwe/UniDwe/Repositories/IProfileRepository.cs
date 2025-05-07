@@ -8,7 +8,7 @@ namespace UniDwe.Repositories
     public interface IProfileRepository
     {
        Task<Profile> CreateProfileAsync(Profile profile);
-       Task UpdateProfileAsync(int profileId);
+       Task UpdateProfileAsync(Profile profile);
        Task<IEnumerable<Profile>> GetProfileAsync(int? userId);
     }
 
@@ -55,26 +55,21 @@ namespace UniDwe.Repositories
             }
         }
 
-        public async Task UpdateProfileAsync(int profileId)
+        public async Task UpdateProfileAsync(Profile profile)
         {
             try
             {
-               var updatedProfile = _dbContext.profiles.Where(p => p.ProfileId == profileId).FirstOrDefault() ?? new Profile();
-                if (updatedProfile != null)
-                {
+               var updatedProfile = _dbContext.profiles.Where(p => p.ProfileId == profile.ProfileId).FirstOrDefault() ?? new Profile();
+                
+               if (updatedProfile != null)
+               {
+                    updatedProfile.ProfileName = profile.ProfileName;
+                    updatedProfile.FirstName = profile.FirstName;
+                    updatedProfile.LastName = profile.LastName;  
+                    updatedProfile.ProfileImage = profile.ProfileImage;
+
                     _dbContext.Entry(updatedProfile).State = EntityState.Modified;
-                }
-                else
-                {
-                    Profile profile = new Profile()
-                    {
-                      ProfileName = updatedProfile!.ProfileName,
-                      FirstName = updatedProfile!.FirstName,
-                      LastName = updatedProfile!.LastName,
-                      ProfileImage = updatedProfile!.ProfileImage,
-                    };
-                   await this.CreateProfileAsync(profile);
-                }
+               } 
                 await _dbContext.SaveChangesAsync();
             }
             catch(Exception ex)

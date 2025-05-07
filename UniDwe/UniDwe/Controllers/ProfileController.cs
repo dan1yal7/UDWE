@@ -68,7 +68,7 @@ namespace UniDwe.Controllers
 
                         await wbf.UploadAndResizeImage(Request.Form.Files[0].OpenReadStream(), filename, 800, 600);
                         profileModel.ProfileImage = filename;
-                        await _profileService.UpdateProfileAsync(profileModel.ProfileId);
+                        await _profileService.UpdateProfileAsync(profileModel);
                     }
                     if (existingProfile == null)
                     {
@@ -77,7 +77,7 @@ namespace UniDwe.Controllers
                     }
                     else
                     {
-                        await _profileService.UpdateProfileAsync(profileModel.ProfileId);
+                        await _profileService.UpdateProfileAsync(profileModel);
                         return Redirect("/");
                     }
                 }
