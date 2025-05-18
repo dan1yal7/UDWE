@@ -9,18 +9,14 @@
     <link rel="stylesheet" href="~/UniDwe.styles.css" asp-append-version="true" />
 
     <style>
-        #page-transition {
-            background-color: black;
+        .fade-wrapper {
             opacity: 0;
             transition: opacity 0.6s ease-in-out;
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 9999;
         }
+
+            .fade-wrapper.fade-in {
+                opacity: 1;
+            }
     </style>
 </head>
 <body>
@@ -52,7 +48,9 @@
 
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody()
+            <div class="fade-wrapper" id="fade-content">
+                @RenderBody()
+            </div>
         </main>
     </div>
 
@@ -65,14 +63,17 @@
         </footer>
     }
 
-    <div id="page-transition"></div>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const content = document.getElementById('fade-content');
+            if (content) content.classList.add('fade-in');
+        });
+
         document.querySelectorAll('a[href]').forEach(link => {
             if (link.getAttribute('target') === '_blank') return;
 
@@ -81,22 +82,17 @@
                 if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.hasAttribute('data-no-transition')) return;
 
                 e.preventDefault();
-                const overlay = document.getElementById('page-transition');
-                overlay.style.opacity = '1';
-                overlay.style.pointerEvents = 'auto';
+                const content = document.getElementById('fade-content');
+                if (content) {
+                    content.classList.remove('fade-in');
+                    content.style.opacity = '0';
+                }
 
                 setTimeout(() => {
                     window.location.href = href;
                 }, 500);
             });
         });
-
-        window.addEventListener('pageshow', () => {
-            const overlay = document.getElementById('page-transition');
-            overlay.style.opacity = '0';
-            overlay.style.pointerEvents = 'none';
-        });
     </script>
 </body>
 </html>
-
