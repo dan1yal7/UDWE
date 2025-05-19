@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject UniDwe.Services.ICurrentUserService CurrentUserService
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -120,7 +122,7 @@
 <body>
     @{
         var isHomePage = Context.Request.Path.Value.Equals("/") || Context.Request.Path.Value.Equals("/Home/Index", StringComparison.OrdinalIgnoreCase);
-        var isLoggedIn = User.Identity.IsAuthenticated;
+        var isLoggedIn = await CurrentUserService.IsLoggedIn();
     }
 
     @if (!Context.Request.Path.Value.Contains("registration", StringComparison.OrdinalIgnoreCase)
@@ -136,7 +138,7 @@
             <div class="menu-content">
                 <a href="/">Home</a>
                 <a href="/Privacy">Privacy</a>
-                <a href="/Authorization">Authorization</a>
+                <a href="/Login">Sign In</a>
                 <a href="/Registration">Registration</a>
                 @if (isLoggedIn)
                 {
