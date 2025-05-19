@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/UniDwe.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
         .fade-wrapper {
@@ -17,44 +18,155 @@
             .fade-wrapper.fade-in {
                 opacity: 1;
             }
+
+        .custom-header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: white;
+        }
+
+            .custom-header .logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.5rem;
+                font-weight: 700;
+            }
+
+        .menu-button {
+            background: transparent;
+            border: 2px solid white;
+            padding: 6px 16px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+            .menu-button:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.96);
+            color: white;
+            z-index: 2000;
+            display: flex;
+            transform: translateY(-100%);
+            transition: transform 0.5s ease-in-out;
+        }
+
+            .menu-overlay.show {
+                transform: translateY(0);
+            }
+
+            .menu-overlay .menu-content {
+                margin: auto 4rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-family: 'Playfair Display', serif;
+                font-size: 2.5rem;
+            }
+
+                .menu-overlay .menu-content a {
+                    color: white;
+                    text-decoration: none;
+                    margin: 0.8rem 0;
+                    position: relative;
+                    transition: all 0.3s ease;
+                }
+
+                    .menu-overlay .menu-content a::after {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        bottom: -4px;
+                        height: 2px;
+                        width: 0;
+                        background-color: white;
+                        transition: width 0.3s ease;
+                    }
+
+                    .menu-overlay .menu-content a:hover::after {
+                        width: 100%;
+                    }
+
+                    .menu-overlay .menu-content a:hover {
+                        transform: translateX(10px);
+                    }
+
+        .menu-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 2rem;
+            cursor: pointer;
+        }
     </style>
+
+    @RenderSection("Styles", required: false)
 </head>
 <body>
-    @if (!Context.Request.Path.Value.Contains("registration", StringComparison.OrdinalIgnoreCase))
-    {
-        <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container-fluid">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">UniDwe</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Privacy">Privacy</a>
-                            </li>
-                            @await Component.InvokeAsync("MainMenu")
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
+    @{
+        var isHomePage = Context.Request.Path.Value.Equals("/") || Context.Request.Path.Value.Equals("/Home/Index", StringComparison.OrdinalIgnoreCase);
+        var isLoggedIn = User.Identity.IsAuthenticated;
     }
 
-    <div class="container">
+    @if (!Context.Request.Path.Value.Contains("registration", StringComparison.OrdinalIgnoreCase)
+    && !Context.Request.Path.Value.Contains("login", StringComparison.OrdinalIgnoreCase))
+    {
+        <header class="custom-header">
+            <div class="logo">UniDwe</div>
+            <button class="menu-button" onclick="toggleMenu()">Menu</button>
+        </header>
+
+        <div id="menuOverlay" class="menu-overlay">
+            <div class="menu-close" onclick="toggleMenu()">&times;</div>
+            <div class="menu-content">
+                <a href="/">Home</a>
+                <a href="/Privacy">Privacy</a>
+                <a href="/Authorization">Authorization</a>
+                <a href="/Registration">Registration</a>
+                @if (isLoggedIn)
+                {
+                    <a href="/Profile">Profile</a>
+                }
+            </div>
+        </div>
+    }
+
+    @if (isHomePage)
+    {
         <main role="main" class="pb-3">
             <div class="fade-wrapper" id="fade-content">
                 @RenderBody()
             </div>
         </main>
-    </div>
+    }
+    else
+    {
+        <div class="container">
+            <main role="main" class="pb-3">
+                <div class="fade-wrapper" id="fade-content">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    }
 
-    @if (!Context.Request.Path.Value.Contains("registration", StringComparison.OrdinalIgnoreCase))
+    @if (!Context.Request.Path.Value.Contains("registration", StringComparison.OrdinalIgnoreCase)
+    && !Context.Request.Path.Value.Contains("login", StringComparison.OrdinalIgnoreCase))
     {
         <footer class="border-top footer text-muted">
             <div class="container">
@@ -69,6 +181,11 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
+        function toggleMenu() {
+            const overlay = document.getElementById('menuOverlay');
+            overlay.classList.toggle('show');
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const content = document.getElementById('fade-content');
             if (content) content.classList.add('fade-in');
