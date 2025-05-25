@@ -1,4 +1,5 @@
-﻿@section Styles {
+﻿
+@section Styles {
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -59,9 +60,9 @@
                 text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
             }
 
-        .project-presentation-section {
+        .project-presentation-section,
+        .about-project-section {
             min-height: 100vh;
-            background-color: #fefaf7;
             padding: 100px 20px;
             display: flex;
             justify-content: center;
@@ -71,10 +72,19 @@
             transition: all 0.8s ease-in-out;
         }
 
-            .project-presentation-section.visible {
+            .project-presentation-section.visible,
+            .about-project-section.visible {
                 opacity: 1;
                 transform: translateY(0);
             }
+
+        .project-presentation-section {
+            background-color: #fefaf7;
+        }
+
+        .about-project-section {
+            background-color: #1b1b1b;
+        }
 
         .presentation-container {
             display: flex;
@@ -110,10 +120,18 @@
                 margin-bottom: 25px;
             }
 
-            .presentation-text p {
-                font-size: 1.2rem;
-                color: #444;
-            }
+        .about-project-section .presentation-text h2 {
+            color: #faf8f5;
+        }
+
+        .presentation-text p {
+            font-size: 1.2rem;
+            color: #444;
+        }
+
+        .about-project-section .presentation-text p {
+            color: #eae6e0;
+        }
 
         .presentation-image {
             flex: 0 1 620px;
@@ -274,22 +292,43 @@
     <div class="news-cards-wrapper">
         <div class="news-card">
             <img src="/backround/photo_2025-05-21_10-19-26.jpg" alt="News Card 1">
-            <p>📧 Contact: <a href="mailto:wtochair@uwed.uz">wtochair@uwed.uz</a></p>
-            <p>📧 Contact: <a href="mailto:kumush.khaitkulieva@mail.ru">kumush.khaitkulieva@mail.ru</a></p>
-            <p>🔗 Follow us:</p>
-            <a href="https://uwed.uz" target="_blank">UWED.UZ</a>
-            <a href="https://t.me/UWEDWTOCHAIR" target="_blank">Telegram</a>
-            <a href="https://www.instagram.com/wto_chairsprogramme/?__pwa=1" target="_blank">Instagram</a>
         </div>
 
         <div class="news-card">
             <img src="/backround/photo_2025-05-25_13-50-46.jpg" alt="News Card 2">
-            <p>📧 Contact: <a href="mailto:wtochair@uwed.uz">wtochair@uwed.uz</a></p>
-            <p>📧 Contact: <a href="mailto:kumush.khaitkulieva@mail.ru">kumush.khaitkulieva@mail.ru</a></p>
-            <p>🔗 Follow us:</p>
-            <a href="https://uwed.uz" target="_blank">UWED.UZ</a>
-            <a href="https://t.me/UWEDWTOCHAIR" target="_blank">Telegram</a>
-            <a href="https://www.instagram.com/wto_chairsprogramme/?__pwa=1" target="_blank">Instagram</a>
+        </div>
+    </div>
+</section>
+
+<section id="about-project" class="about-project-section">
+    <div class="presentation-container">
+        <div class="presentation-text">
+            <h2>About the Project</h2>
+            <p>
+                The WTO Chairs Programme was launched in 2010. The WTO
+                Chairs Programme aims to support trade-related academic
+                activities by universities and research institutions to support and
+                advise policymakers and other stakeholders in developing and
+                least-developed countries. A total of 14 institutions were selected
+                as WTO Chairs for the first four-year term. An additional seven
+                institutions were selected for Phase 2 of the Programme in 2014. Phase 3 of the programme started with a selection process in
+                December 2020, which resulted in 17 institutions being chosen to
+                join the network of Chairs. This further diversifies the Programme's
+                representation across the globe, with the network now comprising
+                36 universities.
+                The main objectives of the Programme are to:
+                Promote research in trade-related matters and highlight
+                policy relevance;
+                Support the development and delivery of courses on
+                international trade and provide teaching support;
+                Encourage outreach activities;
+                Collate information and promote knowledge sharing on
+                international trade;
+                Establish a network of engaged academics.
+            </p>
+        </div>
+        <div class="presentation-image">
+            <img src="/backround/photo_2023-02-07_01-04-36.jpg" alt="About WTO Project">
         </div>
     </div>
 </section>
@@ -297,8 +336,13 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const section1 = document.querySelector(".project-presentation-section");
-        const textBlock1 = document.querySelector(".presentation-text");
-        const imageBlock1 = document.querySelector(".presentation-image");
+        const textBlock1 = document.querySelector(".project-presentation-section .presentation-text");
+        const imageBlock1 = document.querySelector(".project-presentation-section .presentation-image");
+
+        const section2 = document.querySelector(".about-project-section");
+        const textBlock2 = document.querySelector(".about-project-section .presentation-text");
+        const imageBlock2 = document.querySelector(".about-project-section .presentation-image");
+
         const newsCards = document.querySelectorAll(".news-card");
         const newsHeader = document.querySelector(".news-header");
 
@@ -308,6 +352,12 @@
                     section1.classList.add("visible");
                     textBlock1.classList.add("animate-left");
                     imageBlock1.classList.add("animate-right");
+                }
+
+                if (entry.target === section2 && entry.isIntersecting) {
+                    section2.classList.add("visible");
+                    textBlock2.classList.add("animate-left");
+                    imageBlock2.classList.add("animate-right");
                 }
 
                 if (entry.target === newsHeader && entry.isIntersecting) {
@@ -321,6 +371,7 @@
         }, { threshold: 0.3 });
 
         if (section1) observer.observe(section1);
+        if (section2) observer.observe(section2);
         if (newsHeader) observer.observe(newsHeader);
         newsCards.forEach(card => observer.observe(card));
     });
