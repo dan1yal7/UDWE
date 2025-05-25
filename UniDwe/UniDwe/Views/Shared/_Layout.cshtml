@@ -12,6 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         .fade-wrapper {
             opacity: 0;
             transition: opacity 0.6s ease-in-out;
@@ -137,12 +141,11 @@
             <div class="menu-close" onclick="toggleMenu()">&times;</div>
             <div class="menu-content">
                 <a href="/">Home</a>
-                <a href="/Presentation">Project Presentation</a>
-                <a href="/News">News and Updates</a>
+                <a href="#project-presentation">Project Presentation</a>
+                <a href="#news-updates">News and Updates</a>
                 <a href="/About">About the Project</a>
                 <a href="/Team">Project Team</a>
                 <a href="/Publications">Publications</a>
-
 
                 @if (!isLoggedIn)
                 {
@@ -219,6 +222,30 @@
                 setTimeout(() => {
                     window.location.href = href;
                 }, 500);
+            });
+        });
+
+        // NEW: Auto-close overlay on anchor click + smooth scroll
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuOverlay = document.getElementById('menuOverlay');
+            const anchorLinks = document.querySelectorAll('.menu-content a[href^="#"]');
+
+            anchorLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    if (menuOverlay.classList.contains('show')) {
+                        menuOverlay.classList.remove('show');
+                    }
+
+                    if (targetElement) {
+                        setTimeout(() => {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }, 300);
+                    }
+                });
             });
         });
     </script>
