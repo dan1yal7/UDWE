@@ -1,5 +1,4 @@
-﻿
-@section Styles {
+﻿@section Styles {
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -65,6 +64,7 @@
             min-height: 100vh;
             padding: 100px 20px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 0;
@@ -97,16 +97,20 @@
         }
 
         .presentation-text,
-        .presentation-image {
+        .presentation-image,
+        .additional-image,
+        .additional-text {
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.8s ease-in-out;
         }
 
             .presentation-text.animate-left,
-            .presentation-image.animate-right {
+            .presentation-image.animate-right,
+            .additional-image.visible,
+            .additional-text.visible {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateY(0);
             }
 
         .presentation-text {
@@ -120,20 +124,24 @@
                 margin-bottom: 25px;
             }
 
-        .about-project-section .presentation-text h2 {
+        .about-project-section .presentation-text h2,
+        .additional-text h2 {
             color: #faf8f5;
         }
 
-        .presentation-text p {
+        .presentation-text p,
+        .additional-text p {
             font-size: 1.2rem;
             color: #444;
         }
 
-        .about-project-section .presentation-text p {
+        .about-project-section .presentation-text p,
+        .about-project-section .additional-text p {
             color: #eae6e0;
         }
 
-        .presentation-image {
+        .presentation-image,
+        .additional-image {
             flex: 0 1 620px;
             position: relative;
             z-index: 1;
@@ -159,6 +167,17 @@
                 border-radius: 12px;
                 box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             }
+
+            .additional-image img {
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 60px;
+            }
+
+        .additional-text {
+            margin-top: 30px;
+            max-width: 900px;
+        }
 
         .news-updates-section {
             min-height: 100vh;
@@ -288,12 +307,10 @@
     <div class="news-header">
         <h2 class="news-title">News and Updates</h2>
     </div>
-
     <div class="news-cards-wrapper">
         <div class="news-card">
             <img src="/backround/photo_2025-05-21_10-19-26.jpg" alt="News Card 1">
         </div>
-
         <div class="news-card">
             <img src="/backround/photo_2025-05-25_13-50-46.jpg" alt="News Card 2">
         </div>
@@ -305,31 +322,22 @@
         <div class="presentation-text">
             <h2>About the Project</h2>
             <p>
-                The WTO Chairs Programme was launched in 2010. The WTO
-                Chairs Programme aims to support trade-related academic
-                activities by universities and research institutions to support and
-                advise policymakers and other stakeholders in developing and
-                least-developed countries. A total of 14 institutions were selected
-                as WTO Chairs for the first four-year term. An additional seven
-                institutions were selected for Phase 2 of the Programme in 2014. Phase 3 of the programme started with a selection process in
-                December 2020, which resulted in 17 institutions being chosen to
-                join the network of Chairs. This further diversifies the Programme's
-                representation across the globe, with the network now comprising
-                36 universities.
-                The main objectives of the Programme are to:
-                Promote research in trade-related matters and highlight
-                policy relevance;
-                Support the development and delivery of courses on
-                international trade and provide teaching support;
-                Encourage outreach activities;
-                Collate information and promote knowledge sharing on
-                international trade;
-                Establish a network of engaged academics.
+                The WTO Chairs Programme was launched in 2010. The WTO Chairs Programme aims to support trade-related academic activities by universities and research institutions to support and advise policymakers and other stakeholders in developing and least-developed countries. A total of 14 institutions were selected as WTO Chairs for the first four-year term. An additional seven institutions were selected for Phase 2 of the Programme in 2014. Phase 3 of the programme started with a selection process in December 2020, which resulted in 17 institutions being chosen to join the network of Chairs. This further diversifies the Programme's representation across the globe, with the network now comprising 36 universities. The main objectives of the Programme are to: Promote research in trade-related matters and highlight policy relevance; Support the development and delivery of courses on international trade and provide teaching support; Encourage outreach activities; Collate information and promote knowledge sharing on international trade; Establish a network of engaged academics.
             </p>
         </div>
         <div class="presentation-image">
             <img src="/backround/photo_2023-02-07_01-04-36.jpg" alt="About WTO Project">
         </div>
+    </div>
+
+    <div class="additional-image">
+        <img src="/backround/45.jpg" alt="WTO Session">
+    </div>
+
+    <div class="additional-text">
+        <p>
+            The UWED WTO Chair implements three main activities: Transferring advanced knowledge on the WTO and international trade to the Uzbek audience through updating existing courses, implementing new courses, and organizing an annual short summer training course for practitioners at the UWED; Increasing research capacity in the field of WTO standards and WTO law by leading specific research, providing methodological support to young researchers, and concentrating human resources by increasing connectivity among researchers from various disciplines; Fostering dialogue among academics, policymakers, public servants, and civil society institutions by encouraging open debate, discussion, and reflection on international trade and WTO issues and disseminating information to the public at large through a variety of events.
+        </p>
     </div>
 </section>
 
@@ -342,6 +350,8 @@
         const section2 = document.querySelector(".about-project-section");
         const textBlock2 = document.querySelector(".about-project-section .presentation-text");
         const imageBlock2 = document.querySelector(".about-project-section .presentation-image");
+        const additionalImage = document.querySelector(".about-project-section .additional-image");
+        const additionalText = document.querySelector(".about-project-section .additional-text");
 
         const newsCards = document.querySelectorAll(".news-card");
         const newsHeader = document.querySelector(".news-header");
@@ -353,17 +363,20 @@
                     textBlock1.classList.add("animate-left");
                     imageBlock1.classList.add("animate-right");
                 }
-
                 if (entry.target === section2 && entry.isIntersecting) {
                     section2.classList.add("visible");
                     textBlock2.classList.add("animate-left");
                     imageBlock2.classList.add("animate-right");
                 }
-
+                if (entry.target === additionalImage && entry.isIntersecting) {
+                    additionalImage.classList.add("visible");
+                }
+                if (entry.target === additionalText && entry.isIntersecting) {
+                    additionalText.classList.add("visible");
+                }
                 if (entry.target === newsHeader && entry.isIntersecting) {
                     newsHeader.classList.add("visible");
                 }
-
                 if (entry.target.classList.contains("news-card") && entry.isIntersecting) {
                     entry.target.classList.add("visible");
                 }
@@ -372,6 +385,8 @@
 
         if (section1) observer.observe(section1);
         if (section2) observer.observe(section2);
+        if (additionalImage) observer.observe(additionalImage);
+        if (additionalText) observer.observe(additionalText);
         if (newsHeader) observer.observe(newsHeader);
         newsCards.forEach(card => observer.observe(card));
     });
